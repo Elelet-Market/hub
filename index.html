@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Elelet Hub</title>
+<meta name="theme-color" content="#1f3864">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Elelet Hub">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="robots" content="noindex, nofollow">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>
+  html, body { margin: 0; height: 100%; background: #1f3864; overflow: hidden; }
+  #pos { position: fixed; inset: 0; width: 100%; height: 100%; height: 100dvh; border: 0; display: block; background: #eef1f5; }
+  #msg { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;
+         color: #e8ceb0; font: 600 16px system-ui, -apple-system, "Segoe UI", sans-serif; text-align: center; padding: 24px; }
+  #msg img { width: 72px; height: 72px; border-radius: 16px; }
+  #msg small { font-weight: 400; color: #c9d3e3; max-width: 340px; line-height: 1.4; }
+</style>
+</head>
+<body>
+<div id="msg"><img src="icon-192.png" alt=""><div id="msgText">Loading Elelet Hub…</div><small id="msgSub"></small></div>
+<script>
+  // ============================================================
+  // PASTE YOUR APP LINK BETWEEN THE QUOTES BELOW
+  // (Apps Script > Deploy > Manage deployments > Web app URL - it ends with /exec)
+  // ============================================================
+  var APP_URL = 'PASTE-YOUR-APP-LINK-HERE';
+
+  (function () {
+    if (!/^https:\/\/script\.google\.com\/macros\/s\/[^/]+\/exec/.test(APP_URL)) {
+      document.getElementById('msgText').textContent = 'The app link is not set yet.';
+      document.getElementById('msgSub').textContent = 'Open index.html and paste the web app link (ending in /exec) where it says PASTE-YOUR-APP-LINK-HERE.';
+      return;
+    }
+    if (!navigator.onLine) {
+      document.getElementById('msgText').textContent = 'No internet connection.';
+      document.getElementById('msgSub').textContent = 'Elelet Hub needs internet. It will open as soon as you are back online.';
+      window.addEventListener('online', function () { location.reload(); });
+      return;
+    }
+    var f = document.createElement('iframe');
+    f.id = 'pos';
+    f.title = 'Elelet Hub';
+    f.src = APP_URL;
+    // lets the app print, open Maps / phone links, copy text and (later) talk to a Bluetooth receipt printer
+    f.setAttribute('allow', 'bluetooth; clipboard-read; clipboard-write; geolocation; fullscreen; payment');
+    f.setAttribute('allowfullscreen', '');
+    f.style.visibility = 'hidden';
+    f.onload = function () { f.style.visibility = 'visible'; };
+    document.body.appendChild(f);
+  })();
+
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () {}); });
+  }
+</script>
+</body>
+</html>
