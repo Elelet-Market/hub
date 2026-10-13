@@ -1,6 +1,6 @@
 // Keeps the app shell (this page + icons) available so the app opens quickly.
 // The app itself always loads live from Google - nothing from the app is stored here.
-var CACHE = 'elelet-hub-shell-v1';
+var CACHE = 'elelet-hub-shell-v2';
 var SHELL = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'favicon.png'];
 self.addEventListener('install', function (e) {
   e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(SHELL); }).then(function () { return self.skipWaiting(); }));
